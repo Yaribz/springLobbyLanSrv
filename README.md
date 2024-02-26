@@ -24,13 +24,13 @@ Downloads
 
 No dependency, no installation needed (self-signed certificates are auto-generated in script directory)
 
-* `springLobbyLanSrv.exe` (Windows)
-* `springLobbyLanSrv` (Linux)
+* [springLobbyLanSrv.exe](https://github.com/Yaribz/springLobbyLanSrv/releases/latest/download/springLobbyLanSrv.exe) (Windows)
+* [springLobbyLanSrv](https://github.com/Yaribz/springLobbyLanSrv/releases/latest/download/springLobbyLanSrv) (Linux)
 
 Perl script
 ===========
 
-For systems incompatible with the provided binaries, the packaged Perl script `springLobbyLanSrv.pl` is also available but it requires installing a few dependencies as described hereafter.
+For systems incompatible with the provided binaries, the packaged Perl script [springLobbyLanSrv.pl](https://github.com/Yaribz/springLobbyLanSrv/releases/latest/download/springLobbyLanSrv.pl) is also available but it requires installing a few dependencies as described hereafter.
 
 Prerequisites for Windows
 -------------------------

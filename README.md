@@ -19,8 +19,8 @@ Usage
         -w,--wan <addr>     : force manual WAN address for LAN-to-WAN hosting
         -W,--no-wan         : disable support for LAN-to-WAN hosting through NAT
 
-Downloads
-=========
+Downloads (binaries)
+====================
 
 No dependency, no installation needed (self-signed certificates are auto-generated in script directory)
 
@@ -90,9 +90,7 @@ Build commands
 
 ### Build command for Windows binary `springLobbyLanSrv.exe`
 
-**Note:** *Strawberry Perl version `5.38.0.1` is recommended, as the version of `PAR::Packer` included in Strawberry Perl `5.38.2.2` fails to include the DLLs correctly*
-
-    pp -M IO::Socket::SSL -l libcrypto-1_1-x64__.dll -l libssl-1_1-x64__.dll -l zlib1__.dll -o springLobbyLanSrv.exe springLobbyLanSrv.pl
+    pp -M IO::Socket::SSL -l libcrypto-3-x64__.dll -l libssl-3-x64__.dll -l zlib1__.dll -o springLobbyLanSrv.exe springLobbyLanSrv.pl
 
 
 ### Build command for Linux binary `springLobbyLanSrv`

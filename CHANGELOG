@@ -1,0 +1,5 @@
+springLobbyLanSrv.pl:
+====================
+0.10: first public version
+0.11: display components versions in "--version" command line parameter output
+      show server version in MOTD

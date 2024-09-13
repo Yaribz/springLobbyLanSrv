@@ -33,11 +33,12 @@ use List::Util 'any';
 
 use lib "$FindBin::Bin/lib";
 
+use SpringLobbyProtocol;
 use SpringLobbyServer;
 
 use constant { MSWIN32 => $^O eq 'MSWin32' };
 
-my $VERSION='0.10';
+my $VERSION='0.11';
 
 sub badUsage { warn $_[0]."\n" if(defined $_[0]); die "Invalid usage (see --help).\n" };
 
@@ -84,7 +85,12 @@ EOH
 }
 
 if($opt{version}) {
+  my $anyEventModel=AnyEvent::detect();
   print "springLobbyLanSrv v$VERSION\n";
+  print "  . AnyEvent v$AnyEvent::VERSION (event model: $anyEventModel)\n";
+  print "  . Perl $^V\n";
+  print "  . SpringLobbyProtocol v$SpringLobbyProtocol::VERSION\n";
+  print "  . SpringLobbyServer v$SpringLobbyServer::VERSION\n";
   print "\n" unless(MSWIN32);
   exit 0;
 }
@@ -109,6 +115,7 @@ badUsage("\"$opt{country}\" is not a valid country code")
 my %lobbySrvParams=(
   pemKeyFile => catfile($FindBin::Bin,'springLobbyLanSrv-key.pem'),
   pemCertFile => catfile($FindBin::Bin,'springLobbyLanSrv-cert.pem'),
+  motd => [@{$SpringLobbyServer::DEFAULT_PARAMS{motd}},"The server is running springLobbyLanSrv v$VERSION."],
     );
 $lobbySrvParams{debug}=1 if($opt{debug});
 $lobbySrvParams{logger}=sub {} if($opt{quiet});

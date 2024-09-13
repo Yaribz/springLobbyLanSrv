@@ -59,6 +59,8 @@ The `IO::Socket::SSL` and `AnyEvent` Perl modules must be installed as follows:
 Build process
 =============
 
+The build process is only required if you want to modify the source code and regenerate the binaries or the packaged Perl script.
+
 Prerequisites
 -------------
 

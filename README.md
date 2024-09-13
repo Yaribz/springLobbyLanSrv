@@ -85,6 +85,14 @@ In addition to the prerequisites listed above, the build process requires follow
 
       sudo cpan PAR::Packer App::FatPacker EV
 
+Dependencies
+------------
+
+Following Perl modules must be placed in the `lib` subdirectory of the project:
+* [RsaCertPem.pm](https://github.com/Yaribz/RsaCertPem/raw/main/RsaCertPem.pm)
+* [SpringLobbyProtocol.pm](https://github.com/Yaribz/SpringLobbyProtocol/raw/main/SpringLobbyProtocol.pm)
+* [SpringLobbyServer.pm](https://github.com/Yaribz/SpringLobbyServer/raw/main/SpringLobbyServer.pm)
+
 Build commands
 --------------
 

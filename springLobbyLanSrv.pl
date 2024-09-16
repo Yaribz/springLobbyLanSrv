@@ -38,7 +38,7 @@ use SpringLobbyServer;
 
 use constant { MSWIN32 => $^O eq 'MSWin32' };
 
-my $VERSION='0.11';
+my $VERSION='0.12';
 
 sub badUsage { warn $_[0]."\n" if(defined $_[0]); die "Invalid usage (see --help).\n" };
 
@@ -55,6 +55,7 @@ GetOptions(\%opt,qw'
            wan|w=s
            no-wan|W
            country|c=s
+           large-team-nb|l
            ')
     or badUsage();
 
@@ -74,6 +75,7 @@ Usage:
       -c,--country <cc>   : specify country code assigned to clients
       -d,--debug          : show debug messages (very verbose)
       -h,--help           : print usage
+      -l,--large-team-nb  : use protocol extension allowing large team numbers
       -p,--port <n>       : specify listening port (default: 8200)
       -q,--quiet          : remove output
       -v,--version        : print version
@@ -121,6 +123,7 @@ $lobbySrvParams{debug}=1 if($opt{debug});
 $lobbySrvParams{logger}=sub {} if($opt{quiet});
 $lobbySrvParams{listenAddress}=$opt{address} if(defined $opt{address});
 $lobbySrvParams{listenPort}=$opt{port} if(defined $opt{port});
+$lobbySrvParams{protocolExtensions}{'battleStatus:teams-8bit'}=1 if($opt{'large-team-nb'});
 if(defined $opt{wan}) {
   $lobbySrvParams{wanAddress}=$opt{wan};
 }elsif($opt{'no-wan'}) {

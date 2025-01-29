@@ -9,15 +9,16 @@ Usage
     springLobbyLanSrv [options]
     
       Options:
-        -a,--address <addr> : specify listening address (default: all)
-        -c,--country <CC>   : specify country code assigned to clients
-        -d,--debug          : show debug messages (very verbose)
-        -h,--help           : print usage
-        -p,--port <n>       : specify listening port (default: 8200)
-        -q,--quiet          : remove output
-        -v,--version        : print version
-        -w,--wan <addr>     : force manual WAN address for LAN-to-WAN hosting
-        -W,--no-wan         : disable support for LAN-to-WAN hosting through NAT
+        -a,--address <addr>  : specify listening address (default: all)
+        -c,--country <CC>    : specify country code assigned to clients
+        -d,--debug           : show debug messages (very verbose)
+        -h,--help            : print usage
+        -p,--port <n>        : specify listening port (default: 8200)
+        -q,--quiet           : remove output
+        -r,--redirect <addr> : enable redirect mode
+        -v,--version         : print version
+        -w,--wan <addr>      : force manual WAN address for LAN-to-WAN hosting
+        -W,--no-wan          : disable support for LAN-to-WAN hosting through NAT
 
 Downloads (binaries)
 ====================

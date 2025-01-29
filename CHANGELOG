@@ -4,3 +4,4 @@ springLobbyLanSrv.pl:
 0.11: display components versions in "--version" command line parameter output
       show server version in MOTD
 0.12: add support for lobby protocol extension allowing large team numbers (disabled by default)
+0.13: add support for "redirect" mode

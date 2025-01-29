@@ -4,7 +4,7 @@
 #
 # A Spring lobby server running in LAN mode, fast and easy to use
 #
-# Copyright (C) 2024  Yann Riou <yaribzh@gmail.com>
+# Copyright (C) 2025  Yann Riou <yaribzh@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -33,12 +33,12 @@ use List::Util 'any';
 
 use lib "$FindBin::Bin/lib";
 
-use SpringLobbyProtocol;
+use SpringLobbyProtocol ':regex';
 use SpringLobbyServer;
 
 use constant { MSWIN32 => $^O eq 'MSWin32' };
 
-my $VERSION='0.12';
+my $VERSION='0.13';
 
 sub badUsage { warn $_[0]."\n" if(defined $_[0]); die "Invalid usage (see --help).\n" };
 
@@ -52,6 +52,7 @@ GetOptions(\%opt,qw'
 
            address|a=s
            port|p=i
+           redirect|r=s
            wan|w=s
            no-wan|W
            country|c=s
@@ -71,16 +72,17 @@ Usage:
   $FindBin::Script [options]
     
     Options:
-      -a,--address <addr> : specify listening address (default: all)
-      -c,--country <cc>   : specify country code assigned to clients
-      -d,--debug          : show debug messages (very verbose)
-      -h,--help           : print usage
-      -l,--large-team-nb  : use protocol extension allowing large team numbers
-      -p,--port <n>       : specify listening port (default: 8200)
-      -q,--quiet          : remove output
-      -v,--version        : print version
-      -w,--wan <addr>     : force manual WAN address for LAN-to-WAN hosting
-      -W,--no-wan         : disable support for LAN-to-WAN hosting through NAT
+      -a,--address <addr>  : specify listening address (default: all)
+      -c,--country <cc>    : specify country code assigned to clients
+      -d,--debug           : show debug messages (very verbose)
+      -h,--help            : print usage
+      -l,--large-team-nb   : use protocol extension allowing large team numbers
+      -p,--port <n>        : specify listening port (default: 8200)
+      -q,--quiet           : remove output
+      -r,--redirect <addr> : enable redirect mode
+      -v,--version         : print version
+      -w,--wan <addr>      : force manual WAN address for LAN-to-WAN hosting
+      -W,--no-wan          : disable support for LAN-to-WAN hosting through NAT
 EOH
     print "\n" unless(MSWIN32);
     exit 0;
@@ -105,14 +107,22 @@ map {badUsage("Only one command line option allowed among \"--$_->[0]\" and \"--
 
 foreach my $addrOpt (qw'address wan') {
   badUsage("\"$opt{$addrOpt}\" is not a valid IPv4 address")
-      if(defined $opt{$addrOpt} && ($opt{$addrOpt} !~ /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/ || (any {$_ > 255} ($1,$2,$3,$4))));
+      if(defined $opt{$addrOpt} && $opt{$addrOpt} !~ REGEX_IPV4);
 }
 
 badUsage("\"$opt{port}\" is not a valid port number")
-    if(defined $opt{port} && $opt{port} > 65535);
+    if(defined $opt{port} && $opt{port} !~ REGEX_PORT);
 
 badUsage("\"$opt{country}\" is not a valid country code")
     if(defined $opt{country} && $opt{country} !~ /^[a-zA-Z]{2}$/);
+
+my @redirectParam;
+if(defined $opt{redirect}) {
+  @redirectParam=split(/:/,$opt{redirect},2);
+  $redirectParam[0]//='';
+  badUsage("\"$redirectParam[0]\" is not a valid IPv4 address for redirection") unless($redirectParam[0] =~ REGEX_IPV4);
+  badUsage("\"$redirectParam[1]\" is not a valid port number for redirection") if(defined $redirectParam[1] && $redirectParam[1] !~ REGEX_PORT);
+}
 
 my %lobbySrvParams=(
   pemKeyFile => catfile($FindBin::Bin,'springLobbyLanSrv-key.pem'),
@@ -130,6 +140,7 @@ if(defined $opt{wan}) {
   $lobbySrvParams{wanAddress}='';
 }
 $lobbySrvParams{defaultCountryCode}=uc($opt{country}) if(defined $opt{country});
+$lobbySrvParams{redirect}=\@redirectParam if(@redirectParam);
 
 my $lobbySrv=SpringLobbyServer->new(%lobbySrvParams);
 
